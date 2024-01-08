@@ -62,7 +62,7 @@ float Kp   = 0.0; // Kp proportional gain of current control
 float Ki   = 0.0; // Ki integration gain of current control
 float Rm   = 0.0; // Resistance
 float Kb   = 0.0; // Kb (Back EMF)
-float Kf   = 0.0; // Kf friction coe
+float Kv   = 0.0; // Kv friction coe
 
 int main (void) {
     // Link the terminal with our server and start it up
@@ -85,7 +85,7 @@ int main (void) {
             Kb            = input_params[2]; // Kb (Back EMF)
             Kp            = input_params[3]; // Kp proportional gain of current control
             Ki            = input_params[4]; // Ki integration gain of current control
-            Kf            = input_params[5]; // Kf friction coe
+            Kv            = input_params[5]; // Kv friction coe
             float K       = input_params[6]; // KP of impedance
             float D       = input_params[7]; // KD of impedance
             float ExpTime = input_params[8]; // Expriement time in second
