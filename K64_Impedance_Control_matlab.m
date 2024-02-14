@@ -49,18 +49,17 @@ function output_data = K64_Impedance_Control_matlab()
     params.timeout  = 2;            % end of experiment timeout
 
     %% Set experiment parameters
-    angle_desire  = 1;      % Desired angle in rad
     R_motor       = 3.8;    % Winding resistance of motor
-    Kb            = 0.0;    % Motor back-EMF constant
+    kb            = 0.0;    % Motor back-EMF constant
     Kp            = 3;      % Kp Proportional gain of current control
     Ki            = 0.1;    % Ki Integration gain of current control
-    Kv            = 0.0;    % Kv Coefficient of viscous friction
+    kv            = 0.0;    % kv Coefficient of viscous friction
     K             = 0.01;	  % K Impedance stiffness
-    D             = 0.001;	% D Impedance damping
+    D             = 0.00;	  % D Impedance damping
     ExpTime       = 3;      % Expriement time in second
     
     % Pack experiment parameters
-    input = [angle_desire R_motor Kb Kp Ki Kv K D ExpTime];
+    input = [R_motor kb Kp Ki kv K D ExpTime];
     % Number of report data from FRDM
     output_size = 5; % time, angle, veloticy, voltage, current
     

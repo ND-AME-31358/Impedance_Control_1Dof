@@ -23,7 +23,7 @@ public:
 /* --------------------------------------------------- */
 
 // Define number of communication parameters with matlab
-#define NUM_INPUTS 9
+#define NUM_INPUTS 8
 #define NUM_OUTPUTS 5
 
 Serial pc(USBTX, USBRX,115200);     // USB Serial Terminal for debugging
@@ -74,8 +74,8 @@ float current_des = 0.0; // Desired motor current (a.k.a. command current)
 float Kp   = 0.0; // Kp proportional gain of current control
 float Ki   = 0.0; // Ki integral gain of current control
 float Rm   = 0.0; // Rm Motor Winding Resistance
-float Kb   = 0.0; // Kb Motor Back-EMF constant
-float Kv   = 0.0; // Kv Coefficient of viscous friction
+float kb   = 0.0; // kb Motor Back-EMF constant
+float kv   = 0.0; // kv Coefficient of viscous friction
 
 /* Main function that would run on the FRDM board
  * Note: unlike Arduino, we do not have a setup function and a loop function
@@ -98,15 +98,14 @@ int main (void) {
     while(1) {
         if (server.getParams(input_params,NUM_INPUTS)) {
             // Unpack parameters from MATLAB
-            float angle_des = input_params[0]; // Desired angle
-            Rm              = input_params[1]; // Rm Motor Winding Resistance
-            Kb              = input_params[2]; // Kb Motor Back-EMF constant
-            Kp              = input_params[3]; // Kp Proportional gain of current control
-            Ki              = input_params[4]; // Ki Integration gain of current control
-            Kv              = input_params[5]; // Kv Coefficient of viscous friction
-            float K         = input_params[6]; // K  Impedance stiffness
-            float D         = input_params[7]; // D  Impedance damping
-            float ExpTime   = input_params[8]; // Expriement time in second
+            Rm              = input_params[0]; // Rm Motor Winding Resistance
+            kb              = input_params[1]; // kb Motor Back-EMF constant
+            Kp              = input_params[2]; // Kp Proportional gain of current control
+            Ki              = input_params[3]; // Ki Integration gain of current control
+            kv              = input_params[4]; // kv Coefficient of viscous friction
+            float K         = input_params[5]; // K  Impedance stiffness
+            float D         = input_params[6]; // D  Impedance damping
+            float ExpTime   = input_params[7]; // Expriement time in second
 
             // Setup experiment
             t.reset(); // Reset timer
@@ -124,8 +123,8 @@ int main (void) {
                 /* ===== Complete the code in this block =====
                  * Impedance control code
                 */
-                float tau_desire = K * (angle_des - angle) - D * velocity;
-                current_des = tau_desire / Kb;
+                float tau_desire = - K * angle + kv * velocity;
+                current_des = tau_desire / kb;
                 /* ===== End of code block =================== */
 
                 // Fill the output data to send back to MATLAB
