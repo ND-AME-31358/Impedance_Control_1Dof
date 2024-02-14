@@ -124,7 +124,8 @@ int main (void) {
                 /* ===== Complete the code in this block =====
                  * Impedance control code
                 */
-                current_des = ((angle_des - angle)*K -velocity*D)/Kb;
+                float tau_desire = K * (angle_des - angle) - D * velocity;
+                current_des = tau_desire / Kb;
                 /* ===== End of code block =================== */
 
                 // Fill the output data to send back to MATLAB
