@@ -2,9 +2,11 @@ function output_data = K64_Impedance_Control_matlab()
 %K64_Impedance_Control_matlab Communicate to FRDM board to start impedance controller
 %   See parameters below
     figure(1);  clf;       % Create an empty figure to update later
-    subplot(411)
+    subplot(411); hold on
     h1 = plot([0],[0]);
     h1.XData = []; h1.YData = [];
+    h12 = plot([0],[0], 'r');
+    h12.XData = []; h12.YData = [];
     ylabel('Position (rad)');
     
     subplot(412)
@@ -17,9 +19,11 @@ function output_data = K64_Impedance_Control_matlab()
     h3.XData = []; h3.YData = [];
     ylabel('Voltage (V)');
     
-    subplot(414)
+    subplot(414); hold on
     h4 = plot([0],[0]);
     h4.XData = []; h4.YData = [];
+    h42 = plot([0],[0], 'r');
+    h42.XData = []; h42.YData = [];
     ylabel('Current (A)');
     
     % This function will get called any time there is new data from
@@ -30,6 +34,7 @@ function output_data = K64_Impedance_Control_matlab()
       vel     = new_data(:,3); % velocity
       volt    = new_data(:,4); % voltage
       current = new_data(:,5); % current
+      curr_d  = new_data(:,6); % desired current
       N       = length(angle); % number of data points
       
       h1.XData(end+1:end+N) = t;   % Update subplot 1
@@ -40,6 +45,8 @@ function output_data = K64_Impedance_Control_matlab()
       h3.YData(end+1:end+N) = volt;
       h4.XData(end+1:end+N) = t;   % Update subplot 4
       h4.YData(end+1:end+N) = current;
+      h42.XData(end+1:end+N) = t;   % Draw desired current
+      h42.YData(end+1:end+N) = curr_d;
     end
     
     % Setup the communication between PC and FRDM board
@@ -50,7 +57,7 @@ function output_data = K64_Impedance_Control_matlab()
 
     %% Set experiment parameters
     R_motor       = 3.8;    % Winding resistance of motor
-    kb            = 0.0;    % Motor back-EMF constant
+    kb            = 1.0;    % Motor back-EMF constant
     Kp            = 3;      % Kp Proportional gain of current control
     Ki            = 0.1;    % Ki Integration gain of current control
     kv            = 0.0;    % kv Coefficient of viscous friction
@@ -61,7 +68,7 @@ function output_data = K64_Impedance_Control_matlab()
     % Pack experiment parameters
     input = [R_motor kb Kp Ki kv K D ExpTime];
     % Number of report data from FRDM
-    output_size = 5; % time, angle, veloticy, voltage, current
+    output_size = 6; % time, angle, veloticy, voltage, current, current_desired
     
     % Send data to FRDM board, run experiment.
     output_data = RunExperiment(frdm_ip,frdm_port,input,output_size,params);

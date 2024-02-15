@@ -24,7 +24,7 @@ public:
 
 // Define number of communication parameters with matlab
 #define NUM_INPUTS 8
-#define NUM_OUTPUTS 5
+#define NUM_OUTPUTS 6
 
 Serial pc(USBTX, USBRX,115200);     // USB Serial Terminal for debugging
 ExperimentServer server;            // Object that lets us communicate with MATLAB
@@ -134,6 +134,7 @@ int main (void) {
                 output_data[2] = velocity;
                 output_data[3] = voltage;
                 output_data[4] = current;
+                output_data[5] = current_des;
                 
                 // Send data to MATLAB
                 server.sendData(output_data,NUM_OUTPUTS);
