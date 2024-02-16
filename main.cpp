@@ -176,8 +176,8 @@ void currentLoopFunc(){
      * Current controller: compute command voltage on motor
      * Complete the current controller below from your last project
      * Note that we have added an integral term to have a PI controller for better performance
-     *
-    *///      |↓↓↓↓↓↓↓↓↓ Copy Your Previous Current Control Code to Here ↓↓↓↓↓↓↓↓| |↓↓↓↓↓ Integral Term ↓↓↓↓|
+     *       |------------------------------------------------------------------| |↓↓↓↓ Don't Touch The ↓↓↓|
+    *///     |↓↓↓↓↓↓↓↓↓ Copy Your Previous Current Control Code to Here ↓↓↓↓↓↓↓↓| |↓↓↓↓↓ Integral Term ↓↓↓↓|
     voltage = 0.0 * current_des + 0.0 * velocity + 0.0 * (current_des - current) +  Ki * current_error_int;
     /* ===== End of code block =================== */
 
