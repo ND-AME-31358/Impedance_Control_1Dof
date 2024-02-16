@@ -111,11 +111,13 @@ int main (void) {
             t.reset(); // Reset timer
             t.start(); // Start timer so that we have elapsed time of experiment
             encoder.reset();
+            current_des = 0.0;
             current_error_int = 0; // Reset integration of current error
             setMotorVoltage(0,M1INA,M1INB,M1PWM); //Turn off motor just in case
             // Set high-frequency (low-level) current control loop
             // 0.0002 gives the loop period, which means current loop is under 5kHz
             currentLoopTicker.attach(&currentLoopFunc,0.0002);
+            currentLoopFunc(); // Run current controller once before report data
 
             // Run experiment
             while( t.read() < ExpTime ) { 
